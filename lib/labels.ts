@@ -1,6 +1,13 @@
 // English labels for every enum shown in the UI, plus option lists for forms.
 import type {
+  ArticleStatus,
   BacklinkStatus,
+  BriefStatus,
+  KeywordSource,
+  OutlineLevel,
+  PageType,
+  ReviewDecision,
+  SearchIntent,
   ClientStatus,
   CycleStatus,
   GbpPostStatus,
@@ -96,3 +103,64 @@ export const GBP_POST_STATUS: Record<GbpPostStatus, string> = {
 export function options<T extends string>(map: Record<T, string>) {
   return (Object.keys(map) as T[]).map((value) => ({ value, label: map[value] }));
 }
+
+// ---------------------------------------------------------------------------
+// Content pipeline (Phase 2)
+// ---------------------------------------------------------------------------
+export const SEARCH_INTENT: Record<SearchIntent, string> = {
+  informational: "Informational",
+  navigational: "Navigational",
+  commercial: "Commercial",
+  transactional: "Transactional",
+};
+
+export const PAGE_TYPE: Record<PageType, string> = {
+  blog: "Blog",
+  landing: "Landing page",
+  service: "Service page",
+};
+
+export const KEYWORD_SOURCE: Record<KeywordSource, string> = {
+  manual: "Manual",
+  dataforseo: "DataForSEO",
+  se_ranking: "SE Ranking",
+};
+
+export const BRIEF_STATUS: Record<BriefStatus, string> = {
+  draft: "Draft",
+  ready: "Ready",
+  archived: "Archived",
+};
+
+export const OUTLINE_LEVEL: Record<OutlineLevel, string> = {
+  h1: "H1",
+  h2: "H2",
+  h3: "H3",
+};
+
+export const ARTICLE_STATUS: Record<ArticleStatus, string> = {
+  draft: "Draft",
+  assigned: "Assigned",
+  writing: "Writing",
+  submitted: "Submitted",
+  in_review: "In review",
+  revision: "Revision",
+  approved: "Approved",
+  published: "Published",
+};
+
+export const ARTICLE_STATUS_ORDER: ArticleStatus[] = [
+  "draft",
+  "assigned",
+  "writing",
+  "submitted",
+  "in_review",
+  "revision",
+  "approved",
+  "published",
+];
+
+export const REVIEW_DECISION: Record<ReviewDecision, string> = {
+  approve: "Approve",
+  revise: "Request revision",
+};

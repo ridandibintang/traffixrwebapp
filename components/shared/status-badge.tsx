@@ -1,19 +1,25 @@
 import { Badge } from "@/components/ui/badge";
 import {
+  ARTICLE_STATUS,
   BACKLINK_STATUS,
+  BRIEF_STATUS,
   CLIENT_STATUS,
   CYCLE_STATUS,
   GBP_POST_STATUS,
   PRIORITY,
+  SEARCH_INTENT,
   TASK_CATEGORY,
   TASK_STATUS,
 } from "@/lib/labels";
 import type {
+  ArticleStatus,
   BacklinkStatus,
+  BriefStatus,
   ClientStatus,
   CycleStatus,
   GbpPostStatus,
   PriorityLevel,
+  SearchIntent,
   TaskCategory,
   TaskStatus,
 } from "@/lib/types";
@@ -62,4 +68,29 @@ export function BacklinkStatusBadge({ status }: { status: BacklinkStatus }) {
 export function GbpStatusBadge({ status }: { status: GbpPostStatus }) {
   const variant: Variant = status === "published" ? "default" : "secondary";
   return <Badge variant={variant}>{GBP_POST_STATUS[status]}</Badge>;
+}
+
+export function ArticleStatusBadge({ status }: { status: ArticleStatus }) {
+  const variant: Variant =
+    status === "published"
+      ? "default"
+      : status === "approved"
+        ? "default"
+        : status === "revision"
+          ? "destructive"
+          : status === "submitted" || status === "in_review"
+            ? "secondary"
+            : "outline";
+  return <Badge variant={variant}>{ARTICLE_STATUS[status]}</Badge>;
+}
+
+export function BriefStatusBadge({ status }: { status: BriefStatus }) {
+  const variant: Variant =
+    status === "ready" ? "default" : status === "archived" ? "outline" : "secondary";
+  return <Badge variant={variant}>{BRIEF_STATUS[status]}</Badge>;
+}
+
+export function IntentBadge({ intent }: { intent: SearchIntent | null }) {
+  if (!intent) return <span className="text-muted-foreground">—</span>;
+  return <Badge variant="outline">{SEARCH_INTENT[intent]}</Badge>;
 }
