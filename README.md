@@ -44,6 +44,14 @@ Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in
 
    Sign in as the admin to see the sidebar and dashboard; sign in as a writer to see the single-page writer view.
 
+## Deployment
+
+- Production: https://traffixrwebapp.vercel.app (Vercel project `traffixrwebapp`, team Traffixr, Hobby plan), deployed from the `main` branch of github.com/ridandibintang/traffixrwebapp. Every push to `main` redeploys.
+- Vercel environment variables: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` only. The secret key stays local (seed script).
+- Supabase Auth site URL is set to the production address.
+- Database changes ship with `npm run db:push` before or together with the code that needs them.
+- Vercel request bodies are capped at 4.5 MB, so very large crawl uploads need a direct-to-Storage upload (not built yet).
+
 ## Scripts
 
 | Script | What it does |
