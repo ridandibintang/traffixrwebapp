@@ -1,6 +1,6 @@
 # Traffixr
 
-Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in phases; this repository is at **Phase 3: Screaming Frog import** (Phases 0–2 plus crawl uploads stored in Supabase Storage, findings grouped per issue, issue rules, one-click conversion to tasks, and new/persisting/fixed comparison between crawls).
+Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in phases; this repository is at **Phase 4: Reporting** (Phases 0–3 plus GSC/GA4 metrics via CSV import or manual totals, two-week reports assembled automatically per cycle with editable narrative, and PDF export).
 
 - Next.js 16 (App Router, TypeScript), Tailwind CSS 4, shadcn/ui
 - Supabase: PostgreSQL, Auth (email + password), Row Level Security
@@ -73,13 +73,16 @@ app/
         audits/            crawl list, new (upload), [auditId] grouped findings + classify + convert
         backlinks/         monthly backlink log
         gbp/               weekly GBP post schedule
+        metrics/           GSC/GA4 snapshot sets, import (CSV), manual totals
+        reports/           cycle reports: list, [reportId] preview + narrative form
     templates/             recurring task templates
     content/               cross-client article pipeline + briefs ready to assign
     audits/                all crawls across clients; rules/ manages issue rules
     off-page/              backlinks this month + upcoming GBP posts, all clients
     my-articles/           writer portal: list, [articleId] brief + draft/submit/publish
-    reports/               placeholder until Phase 4
+    reports/               all reports across clients
   api/briefs/[briefId]/docx  Golden Standard .docx export
+  api/reports/[reportId]/pdf report PDF export (@react-pdf/renderer)
   auth/signout/            route handler that ends the session
 components/
   ui/                      shadcn/ui (+ native-select)
@@ -94,6 +97,9 @@ lib/
   briefs/docx.ts           Golden Standard .docx renderer (docx package)
   keywords/csv.ts          header-based keyword CSV parser (papaparse)
   audits/parse.ts          crawl export parser: Screaming Frog CSVs, Issues Overview, .xlsx audit workbooks (SheetJS)
+  metrics/parse.ts         GSC (Dates/Queries/Pages) and GA4 (channels/landing pages) CSV parsers, EN + ID headers
+  reports/assemble.ts      builds the four report sections from app data; autoSummaries() writes the narrative
+  reports/pdf.tsx          report PDF document
   supabase/fetch-all.ts    pages through the 1000-row PostgREST limit
   markdown.ts              **bold** and "- " bullets, shared by web view and .docx
   templates.ts             generate per-cycle tasks, sync weekly/monthly tasks
@@ -141,6 +147,12 @@ proxy.ts                   session refresh + redirect to /login
 
 Server actions accept up to 40 MB per upload (`experimental.serverActions.bodySizeLimit`), 20 MB per file.
 
+## Metrics and reports
+
+1. **Metrics** (client tab): import Search Console CSVs (`Dates.csv` gives period totals, `Queries.csv` and `Pages.csv` give top lists) and GA4 exports (traffic acquisition for organic totals, landing pages for top pages; the period is read from the file header). Or type the headline totals by hand. Everything lands in `metric_snapshots` keyed by source and period; re-importing a period replaces it. The same table shape will be filled by the APIs in Phase 5.
+2. **Report** (cycle page → *Create report*): one report per cycle, period defaults to the cycle dates. Four sections are assembled live: work completed (done tasks, published articles, crawl issues fixed), off-page (backlinks live, GBP posts published), organic performance (this period vs the previous snapshot set, with deltas, top queries and pages), and the plan for the next cycle (its tasks, the content pipeline, upcoming GBP posts and backlinks).
+3. The four summaries plus notes are auto-written from the numbers on creation and can be edited; *Regenerate summaries* overwrites them from current data. Mark the report *Final* after the meeting and *Export PDF* for the client.
+
 ## Next
 
-Phase 4: GSC and GA4 data import (CSV or manual), automatic report assembly including off-page, narrative, PDF export.
+Phase 5: DataForSEO for keywords, GSC and GA4 APIs for metrics, through a single adapter layer in `integrations/`.

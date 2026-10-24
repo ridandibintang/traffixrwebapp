@@ -11,6 +11,8 @@ const SECTIONS = [
   { label: "Audits", path: "/audits" },
   { label: "Backlinks", path: "/backlinks" },
   { label: "GBP posts", path: "/gbp" },
+  { label: "Metrics", path: "/metrics" },
+  { label: "Reports", path: "/reports" },
 ];
 
 export function ClientTabs({ clientId }: { clientId: string }) {

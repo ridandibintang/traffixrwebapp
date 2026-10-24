@@ -21,6 +21,8 @@ export type Comment = Tables<"comments">;
 export type Audit = Tables<"audits">;
 export type AuditFinding = Tables<"audit_findings">;
 export type IssueRule = Tables<"issue_rules">;
+export type MetricSnapshot = Tables<"metric_snapshots">;
+export type Report = Tables<"reports">;
 
 export type UserRole = Enums<"user_role">;
 export type ClientStatus = Enums<"client_status">;
@@ -45,6 +47,9 @@ export type AuditType = Enums<"audit_type">;
 export type FindingSeverity = Enums<"finding_severity">;
 export type FindingState = Enums<"finding_state">;
 export type FindingStatus = Enums<"finding_status">;
+export type MetricSource = Enums<"metric_source">;
+export type DimensionType = Enums<"dimension_type">;
+export type ReportStatus = Enums<"report_status">;
 
 // Shape stored in clients.services and clients.key_pages (jsonb)
 export type LinkItem = { name: string; url: string };

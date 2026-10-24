@@ -10,6 +10,7 @@ import {
   FINDING_STATE,
   GBP_POST_STATUS,
   PRIORITY,
+  REPORT_STATUS,
   SEARCH_INTENT,
   TASK_CATEGORY,
   TASK_STATUS,
@@ -25,6 +26,7 @@ import type {
   FindingState,
   GbpPostStatus,
   PriorityLevel,
+  ReportStatus,
   SearchIntent,
   TaskCategory,
   TaskStatus,
@@ -114,4 +116,8 @@ export function FindingStateBadge({ state }: { state: FindingState }) {
 
 export function AuditTypeBadge({ type }: { type: AuditType }) {
   return <Badge variant="outline">{AUDIT_TYPE[type]}</Badge>;
+}
+
+export function ReportStatusBadge({ status }: { status: ReportStatus }) {
+  return <Badge variant={status === "final" ? "default" : "secondary"}>{REPORT_STATUS[status]}</Badge>;
 }

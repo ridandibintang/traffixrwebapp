@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
-import { Pencil, Plus } from "lucide-react";
+import { FileText, Pencil, Plus } from "lucide-react";
 import { CycleActions } from "@/components/cycles/cycle-actions";
 import { LinkButton } from "@/components/shared/link-button";
+import { Button } from "@/components/ui/button";
+import { openReportAction } from "@/lib/actions/reports";
 import { CycleStatusBadge } from "@/components/shared/status-badge";
 import { TaskBoard } from "@/components/tasks/task-board";
 import { TaskFilters } from "@/components/tasks/task-filters";
@@ -38,7 +40,10 @@ export default async function CyclePage({
   // Weekly/monthly template tasks appear the first time the active cycle is opened in a new period.
   if (cycle.status === "active") await syncRecurringTasks(supabase, clientId);
 
-  const tasks = await getCycleTasks(cycleId, category);
+  const [tasks, { data: report }] = await Promise.all([
+    getCycleTasks(cycleId, category),
+    supabase.from("reports").select("id, status").eq("cycle_id", cycleId).maybeSingle(),
+  ]);
 
   const basePath = `/clients/${clientId}/cycles/${cycleId}`;
   const qs = new URLSearchParams();
@@ -65,6 +70,19 @@ export default async function CyclePage({
         </div>
         <div className="flex flex-wrap gap-2">
           <CycleActions cycleId={cycle.id} status={cycle.status} />
+          {report ? (
+            <LinkButton href={`/clients/${clientId}/reports/${report.id}`} variant="outline" size="sm">
+              <FileText />
+              {report.status === "final" ? "Final report" : "Draft report"}
+            </LinkButton>
+          ) : (
+            <form action={openReportAction.bind(null, clientId, cycle.id)}>
+              <Button type="submit" variant="outline" size="sm">
+                <FileText />
+                Create report
+              </Button>
+            </form>
+          )}
           <LinkButton href={`${basePath}/edit`} variant="outline" size="sm">
             <Pencil />
             Edit

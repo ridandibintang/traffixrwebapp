@@ -8,15 +8,18 @@ import type {
   BacklinkStatus,
   BriefStatus,
   KeywordSource,
+  MetricSource,
   OutlineLevel,
   PageType,
   ReviewDecision,
   SearchIntent,
   ClientStatus,
   CycleStatus,
+  DimensionType,
   GbpPostStatus,
   GbpPostType,
   PriorityLevel,
+  ReportStatus,
   TaskCategory,
   TaskSource,
   TaskStatus,
@@ -202,4 +205,28 @@ export const SEVERITY_TO_PRIORITY: Record<FindingSeverity, PriorityLevel> = {
   medium: "medium",
   high: "high",
   critical: "urgent",
+};
+
+// ---------------------------------------------------------------------------
+// Metrics and reports (Phase 4)
+// ---------------------------------------------------------------------------
+export const METRIC_SOURCE: Record<MetricSource, string> = {
+  gsc: "Google Search Console",
+  ga4: "Google Analytics 4",
+};
+
+export const METRIC_SOURCE_SHORT: Record<MetricSource, string> = {
+  gsc: "GSC",
+  ga4: "GA4",
+};
+
+export const DIMENSION_TYPE: Record<DimensionType, string> = {
+  total: "Totals",
+  query: "Queries",
+  page: "Pages",
+};
+
+export const REPORT_STATUS: Record<ReportStatus, string> = {
+  draft: "Draft",
+  final: "Final",
 };
