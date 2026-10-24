@@ -8,6 +8,7 @@ const SECTIONS = [
   { label: "Keywords", path: "/keywords" },
   { label: "Briefs", path: "/briefs" },
   { label: "Articles", path: "/articles" },
+  { label: "Audits", path: "/audits" },
   { label: "Backlinks", path: "/backlinks" },
   { label: "GBP posts", path: "/gbp" },
 ];

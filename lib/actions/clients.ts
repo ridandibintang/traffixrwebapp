@@ -86,3 +86,33 @@ export async function updateClientAction(
   revalidatePath(`/clients/${clientId}`);
   redirect(`/clients/${clientId}`);
 }
+
+/**
+ * Deletes a client and everything attached to it. Database rows go through
+ * ON DELETE CASCADE (cycles, tasks, keywords, briefs, articles, audits, ...);
+ * stored audit files are removed here first because Storage has no cascade.
+ */
+export async function deleteClientAction(clientId: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+
+  const bucket = supabase.storage.from("audit-files");
+  const { data: folders } = await bucket.list(clientId, { limit: 1000 });
+  const paths: string[] = [];
+  for (const folder of folders ?? []) {
+    if (folder.id) {
+      paths.push(`${clientId}/${folder.name}`);
+      continue;
+    }
+    const { data: files } = await bucket.list(`${clientId}/${folder.name}`, { limit: 1000 });
+    for (const f of files ?? []) paths.push(`${clientId}/${folder.name}/${f.name}`);
+  }
+  if (paths.length) await bucket.remove(paths);
+
+  const { error } = await supabase.from("clients").delete().eq("id", clientId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/clients");
+  revalidatePath("/dashboard");
+  redirect("/clients");
+}

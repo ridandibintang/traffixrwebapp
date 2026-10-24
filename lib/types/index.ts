@@ -18,6 +18,9 @@ export type BriefOutlineItem = Tables<"brief_outline_items">;
 export type Article = Tables<"articles">;
 export type ArticleReview = Tables<"article_reviews">;
 export type Comment = Tables<"comments">;
+export type Audit = Tables<"audits">;
+export type AuditFinding = Tables<"audit_findings">;
+export type IssueRule = Tables<"issue_rules">;
 
 export type UserRole = Enums<"user_role">;
 export type ClientStatus = Enums<"client_status">;
@@ -38,6 +41,10 @@ export type OutlineLevel = Enums<"outline_level">;
 export type ArticleStatus = Enums<"article_status">;
 export type ReviewDecision = Enums<"review_decision">;
 export type CommentEntity = Enums<"comment_entity">;
+export type AuditType = Enums<"audit_type">;
+export type FindingSeverity = Enums<"finding_severity">;
+export type FindingState = Enums<"finding_state">;
+export type FindingStatus = Enums<"finding_status">;
 
 // Shape stored in clients.services and clients.key_pages (jsonb)
 export type LinkItem = { name: string; url: string };

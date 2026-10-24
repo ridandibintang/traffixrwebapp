@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import {
   ARTICLE_STATUS,
+  AUDIT_TYPE,
   BACKLINK_STATUS,
   BRIEF_STATUS,
   CLIENT_STATUS,
   CYCLE_STATUS,
+  FINDING_SEVERITY,
+  FINDING_STATE,
   GBP_POST_STATUS,
   PRIORITY,
   SEARCH_INTENT,
@@ -13,10 +16,13 @@ import {
 } from "@/lib/labels";
 import type {
   ArticleStatus,
+  AuditType,
   BacklinkStatus,
   BriefStatus,
   ClientStatus,
   CycleStatus,
+  FindingSeverity,
+  FindingState,
   GbpPostStatus,
   PriorityLevel,
   SearchIntent,
@@ -93,4 +99,19 @@ export function BriefStatusBadge({ status }: { status: BriefStatus }) {
 export function IntentBadge({ intent }: { intent: SearchIntent | null }) {
   if (!intent) return <span className="text-muted-foreground">—</span>;
   return <Badge variant="outline">{SEARCH_INTENT[intent]}</Badge>;
+}
+
+export function SeverityBadge({ severity }: { severity: FindingSeverity }) {
+  const variant: Variant =
+    severity === "critical" ? "destructive" : severity === "high" ? "default" : severity === "medium" ? "secondary" : "outline";
+  return <Badge variant={variant}>{FINDING_SEVERITY[severity]}</Badge>;
+}
+
+export function FindingStateBadge({ state }: { state: FindingState }) {
+  const variant: Variant = state === "new" ? "default" : state === "fixed" ? "outline" : "secondary";
+  return <Badge variant={variant}>{FINDING_STATE[state]}</Badge>;
+}
+
+export function AuditTypeBadge({ type }: { type: AuditType }) {
+  return <Badge variant="outline">{AUDIT_TYPE[type]}</Badge>;
 }

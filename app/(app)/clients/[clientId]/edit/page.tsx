@@ -1,5 +1,6 @@
 import { ClientForm } from "@/components/forms/client-form";
-import { updateClientAction } from "@/lib/actions/clients";
+import { DeleteButton } from "@/components/shared/delete-button";
+import { deleteClientAction, updateClientAction } from "@/lib/actions/clients";
 import { getClientOr404 } from "@/lib/queries/clients";
 
 export default async function EditClientPage({
@@ -13,7 +14,14 @@ export default async function EditClientPage({
 
   return (
     <>
-      <h2 className="text-lg font-semibold">Edit client</h2>
+      <div className="flex items-start justify-between gap-4">
+        <h2 className="text-lg font-semibold">Edit client</h2>
+        <DeleteButton
+          action={deleteClientAction.bind(null, client.id)}
+          label="Delete client"
+          confirmText={`Delete ${client.name}? This removes all of its cycles, tasks, keywords, briefs, articles, audits, backlinks and GBP posts. This cannot be undone.`}
+        />
+      </div>
       <ClientForm action={action} initial={client} cancelHref={`/clients/${client.id}`} />
     </>
   );

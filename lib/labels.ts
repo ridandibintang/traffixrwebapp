@@ -1,6 +1,10 @@
 // English labels for every enum shown in the UI, plus option lists for forms.
 import type {
   ArticleStatus,
+  AuditType,
+  FindingSeverity,
+  FindingState,
+  FindingStatus,
   BacklinkStatus,
   BriefStatus,
   KeywordSource,
@@ -163,4 +167,39 @@ export const ARTICLE_STATUS_ORDER: ArticleStatus[] = [
 export const REVIEW_DECISION: Record<ReviewDecision, string> = {
   approve: "Approve",
   revise: "Request revision",
+};
+
+// ---------------------------------------------------------------------------
+// Audits (Phase 3)
+// ---------------------------------------------------------------------------
+export const AUDIT_TYPE: Record<AuditType, string> = {
+  on_page: "On-page",
+  technical: "Technical",
+};
+
+export const FINDING_SEVERITY: Record<FindingSeverity, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  critical: "Critical",
+};
+
+export const FINDING_STATE: Record<FindingState, string> = {
+  new: "New",
+  persisting: "Persisting",
+  fixed: "Fixed",
+};
+
+export const FINDING_STATUS: Record<FindingStatus, string> = {
+  open: "Open",
+  converted: "Converted to task",
+  ignored: "Ignored",
+};
+
+/** Default task priority for a finding severity. */
+export const SEVERITY_TO_PRIORITY: Record<FindingSeverity, PriorityLevel> = {
+  low: "low",
+  medium: "medium",
+  high: "high",
+  critical: "urgent",
 };
