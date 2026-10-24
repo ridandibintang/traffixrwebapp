@@ -48,6 +48,7 @@ Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in
 
 - Production: https://traffixrwebapp.vercel.app (Vercel project `traffixrwebapp`, team Traffixr, Hobby plan), deployed from the `main` branch of github.com/ridandibintang/traffixrwebapp. Every push to `main` redeploys.
 - Vercel environment variables: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` only. The secret key stays local (seed script).
+- Functions run in `bom1` (Mumbai, see `vercel.json`) because the Supabase project is in ap-south-1; keep the two together if either ever moves. Auth checks use `getClaims()` (local JWT verification with the project's ECC signing key) and `getCurrentUser()` is request-cached, so a page costs one profile query plus its own data queries.
 - Supabase Auth site URL is set to the production address.
 - Database changes ship with `npm run db:push` before or together with the code that needs them.
 - Vercel request bodies are capped at 4.5 MB, so very large crawl uploads need a direct-to-Storage upload (not built yet).
