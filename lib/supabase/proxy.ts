@@ -27,10 +27,12 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // getUser() validates the JWT with Supabase Auth; do not replace with getSession().
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims() verifies the session JWT locally against the project's public
+  // signing keys (cached), so this costs no round trip on most requests. It
+  // also refreshes an expired session. Never use getSession() here: it does
+  // not verify the token.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims?.sub ? { id: data.claims.sub } : null;
 
   const { pathname } = request.nextUrl;
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));

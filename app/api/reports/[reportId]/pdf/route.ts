@@ -12,10 +12,8 @@ export async function GET(
 ) {
   const { reportId } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return new NextResponse("Unauthorized", { status: 401 });
+  const { data: auth } = await supabase.auth.getClaims();
+  if (!auth?.claims?.sub) return new NextResponse("Unauthorized", { status: 401 });
 
   const { data: report } = await supabase.from("reports").select("*").eq("id", reportId).maybeSingle();
   if (!report) return new NextResponse("Not found", { status: 404 });
