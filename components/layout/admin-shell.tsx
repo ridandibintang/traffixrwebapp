@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import type { CurrentUser } from "@/lib/auth";
-import { ADMIN_NAV } from "./nav-items";
 import { SidebarNav } from "./sidebar-nav";
 import { SignOutButton } from "./sign-out-button";
 import { UserBadge } from "./user-badge";
@@ -22,7 +21,7 @@ export function AdminShell({
           </Link>
         </div>
         <div className="px-3">
-          <SidebarNav items={ADMIN_NAV} />
+          <SidebarNav />
         </div>
         <div className="mt-auto flex flex-col gap-3 p-3">
           <Separator />
