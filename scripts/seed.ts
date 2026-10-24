@@ -9,7 +9,8 @@
  */
 import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
-import type { Database, UserRole } from "../lib/types/database";
+import type { Database } from "../lib/types/database";
+import type { UserRole } from "../lib/types";
 
 config({ path: ".env.local" });
 

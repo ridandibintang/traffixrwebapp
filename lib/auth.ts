@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { Profile } from "@/lib/types/database";
+import type { Profile } from "@/lib/types";
 
 export type CurrentUser = {
   id: string;

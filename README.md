@@ -1,6 +1,6 @@
 # Traffixr
 
-Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in phases; this repository is at **Phase 0: Foundation**.
+Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in phases; this repository is at **Phase 1: Clients and cycles** (Phase 0 foundation plus client profiles, two-week cycles, task boards, task templates, backlink log, GBP post schedule, cross-client dashboard).
 
 - Next.js 16 (App Router, TypeScript), Tailwind CSS 4, shadcn/ui
 - Supabase: PostgreSQL, Auth (email + password), Row Level Security
@@ -59,23 +59,46 @@ Internal SEO operations app for the Traffixr team (1 admin, 2 writers). Built in
 
 ```
 app/
-  (auth)/login/        sign-in page + server action
-  (app)/               everything behind auth; layout picks the shell by role
-    dashboard/         admin home
-    my-articles/       writer home
-    clients|content|audits|off-page|reports/   placeholders until their phase
-  auth/signout/        route handler that ends the session
+  (auth)/login/            sign-in page + server action
+  (app)/                   everything behind auth; layout picks the shell by role
+    dashboard/             cross-client dashboard (tasks due, meetings, off-page)
+    clients/               client list, new/edit
+      [clientId]/          layout with client header + tabs
+        page.tsx           overview: profile, content context, cycles, backlog
+        cycles/            new (with next-cycle handoff), [cycleId] board/list, edit
+        tasks/             new, [taskId]/edit
+        backlinks/         monthly backlink log
+        gbp/               weekly GBP post schedule
+    templates/             recurring task templates
+    off-page/              backlinks this month + upcoming GBP posts, all clients
+    my-articles/           writer home
+    content|audits|reports/   placeholders until their phase
+  auth/signout/            route handler that ends the session
 components/
-  ui/                  shadcn/ui
-  layout/              admin sidebar, writer header, shared page pieces
+  ui/                      shadcn/ui (+ native-select)
+  layout/                  admin sidebar, writer header, client tabs
+  forms/                   one form component per entity (client, cycle, task, ...)
+  tasks/                   board, list, card, filters, status select
+  shared/                  field, submit/delete/link buttons, status badges
 lib/
-  supabase/            browser client, server client, proxy session refresh
-  auth.ts              getCurrentUser(), requireAdmin()
-  types/database.ts    Database type (hand-written for Phase 0, generated later)
-supabase/migrations/   0001 schema · 0002 functions & triggers · 0003 RLS
-scripts/seed.ts        seed users + client via the secret key
-proxy.ts               session refresh + redirect to /login
+  actions/                 server actions per entity (zod-validated)
+  queries/                 read helpers used by pages
+  templates.ts             generate per-cycle tasks, sync weekly/monthly tasks
+  dates.ts · labels.ts · form.ts   helpers
+  supabase/                browser client, server client, proxy session refresh
+  auth.ts                  getCurrentUser(), requireAdmin()
+  types/database.ts        generated from Supabase (npm run db:types)
+supabase/migrations/       0001 schema · 0002 functions & triggers · 0003 RLS · 0004 template tasks
+scripts/seed.ts            seed users + client via the secret key
+proxy.ts                   session refresh + redirect to /login
 ```
+
+## How recurring tasks work
+
+- **Every cycle** templates are copied into a cycle when it is created.
+- **Weekly** and **monthly** templates are added to each active cycle the first time the dashboard or that cycle is opened in a new week or month. No scheduler is needed.
+- A unique index on `(template_id, period_key)` makes this idempotent, so reloading never duplicates a task.
+- When a cycle is closed, the next-cycle form offers to move unfinished manual tasks. Template tasks are not moved; the new cycle gets its own.
 
 ## Access rules (enforced by RLS)
 
@@ -89,4 +112,4 @@ proxy.ts               session refresh + redirect to /login
 
 ## Next
 
-Phase 1: client profiles and context, two-week cycles, task boards, task templates, backlink log, GBP schedule, cross-client dashboard.
+Phase 2: keywords and clusters, brief import from JSON, 7-section brief form, .docx export, writer assignment, writer portal, review checklist, publish tracking.

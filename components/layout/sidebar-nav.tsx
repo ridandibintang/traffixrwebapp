@@ -8,6 +8,7 @@ import {
   FileText,
   LayoutDashboard,
   Link2,
+  Repeat,
   ScanSearch,
   type LucideIcon,
 } from "lucide-react";
@@ -26,6 +27,7 @@ type NavItem = {
 const ADMIN_NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Clients", href: "/clients", icon: Building2 },
+  { label: "Templates", href: "/templates", icon: Repeat },
   { label: "Content", href: "/content", icon: FileText },
   { label: "Audits", href: "/audits", icon: ScanSearch },
   { label: "Off-page", href: "/off-page", icon: Link2 },
